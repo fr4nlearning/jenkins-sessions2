@@ -1,0 +1,18 @@
+pipeline{
+
+    agent any
+
+    stages{
+        stage('stage-1'){
+            steps{
+                // BUILD_NUMBERS es una variable de Jenkins
+                echo "this is build number $BUILD_NUMBERS OF $DEMO"         
+            }
+        }
+    }
+
+    // variable global que se destruye cuando termina
+    environment{
+        DEMO='1'
+    }
+}

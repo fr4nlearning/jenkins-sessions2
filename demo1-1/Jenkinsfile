@@ -1,0 +1,15 @@
+// Pipeline que se ha puesto en Jenkins a fuego
+pipeline{
+
+    agent any
+ 
+    stages{
+        stage('Hello'){
+            steps{
+                // BUILD_NUMBERS es una variable de Jenkins
+                echo "this is build number $BUILD_NUMBER"
+                
+            }
+        }
+    }
+}
