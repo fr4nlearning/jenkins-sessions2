@@ -1,1 +1,0 @@
-echo "Inside th script, demo $DEMO"
