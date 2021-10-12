@@ -10,7 +10,7 @@ pipeline{
         stage('stage-1'){
             steps{
                 // BUILD_NUMBERS es una variable de Jenkins
-                echo "this is build number $BUILD_NUMBERS OF $DEMO"
+                echo "this is build number $BUILD_NUMBER OF $DEMO"
                 // desde test.sh puedo usar la variable DEMO
                 sh '''
                     echo "Using a multi shell steps"
