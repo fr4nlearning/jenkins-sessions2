@@ -13,9 +13,9 @@ pipeline{
                 echo "this is build number $BUILD_NUMBER OF $DEMO"
                 // desde test.sh puedo usar la variable DEMO
                 sh '''
-                    echo "Using a multi shell steps"
-                    chmod +x test.sh
-                    ./test.sh
+                    echo "Using a multi shell steps";
+                    chmod +x test.sh;
+                    ./test.sh;
                 '''
             }
         }
