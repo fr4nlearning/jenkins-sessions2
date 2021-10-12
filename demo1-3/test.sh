@@ -1,1 +1,1 @@
-echo "Inside th script, demo $DEMO"
+echo "Inside the script, demo $DEMO"
