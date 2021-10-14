@@ -20,6 +20,7 @@ pipeline{
         }
         stage('Test'){
             steps{
+                // no puedo tener acceso a LOG_LEVEL
                 echo "Testing, I can see release ${RELEASE} with log level ${LOG_LEVEL}"
             }
         }
