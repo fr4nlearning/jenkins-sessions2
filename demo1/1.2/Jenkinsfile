@@ -41,7 +41,7 @@ pipeline{
     // despues de los stages se ejecutara el post
     post{
         always{
-            echo 'Prints success or failiure'
+            echo "Prints success or failiure"
         }
     }
 }
