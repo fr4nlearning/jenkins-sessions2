@@ -4,7 +4,7 @@ pipeline{
     environment{
         // sh es un plugin que nos permite hacer varias cosas
         // nos movemos como si estuvieramos en JENKINS-SESSION2 poruqe es la raiz del repositorio
-        VERSION=sh([script: 'cd ./01/solution && npm rn env | grep "npm_package_version"', returnStdout: true]).trim()
+        VERSION=sh([script: 'cd ./01/solution && npm run env | grep "npm_package_version"', returnStdout: true]).trim()
         VERSION_RC= "rc.2"
     }
 
