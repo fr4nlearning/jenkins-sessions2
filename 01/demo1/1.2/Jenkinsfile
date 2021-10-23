@@ -60,7 +60,7 @@ pipeline{
             // cuando se de una condicion
             when{
                 // con params me permite acceder al parametro creado en booleanParam(name: 'RC', ..........
-                expression{return paams.RC}
+                expression{return params.RC}
             }
             // cuando el when sea verdad ocurrira el siguiente steps
             steps{
