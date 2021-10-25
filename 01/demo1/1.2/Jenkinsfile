@@ -18,12 +18,7 @@ pipeline{
         stage('Audit tools'){
 
             steps{
-                sh '''
-                    git version
-                    docker version
-                    node --version
-                    npm version
-                '''
+                auditTools()
             }
 
         }
@@ -31,7 +26,7 @@ pipeline{
             // variables de entorno para este stage
             environment{
                 // returnStdout: true lo necesitamos para volcal el valor sobre la variable VERSION_SUFFIX
-                VERSION_SUFFIX= "${sh(script:'if ["${RC}" == "false"]; then echo -n "${VERSION_RC}+ci.${BUILD_NUMBER}"; else echo -n "${VERSION_RC}"; fi', returnStdout: true)}"
+                VERSION_SUFFIX= getVersionSuffix()
             }
             steps{
                 // dir es un plugin que nos permite cambiar de directorio
@@ -71,4 +66,24 @@ pipeline{
         }
     }
 
+}
+
+String getVersionSuffix(){
+    if(param.RC){
+
+        return env.VERSION_RC
+    }else{
+
+        return env.VERSION_RC+'+ci'+env.BUILD_NUMBER
+    }
+}
+
+void auditTools(){
+
+    sh '''
+        git version
+        docker version
+        node --version
+        npm version
+    '''
 }
