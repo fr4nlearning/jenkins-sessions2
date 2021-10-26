@@ -1,0 +1,74 @@
+// https://github.com/fr4nlearning/jenkins-library-sessions.git
+// master es el nombre de la rama en la que esta en el repositorio
+library identifier: 'jenkins-library-sessions@master',
+        retriever: modernSCM([$class: 'GitSCMSource', remote: 'https://github.com/fr4nlearning/jenkins-library-sessions.git'])
+        
+pipeline{
+    agent any
+
+    // con esto añadimos parametros adicionales dentro de la pipeline
+    parameters{
+        booleanParam(name: 'RC', defaultValue: false, description: 'Is this a Release Candidate')
+    }
+
+    environment{
+        // sh es un plugin que nos permite hacer varias cosas
+        // nos movemos como si estuvieramos en JENKINS-SESSION2 poruqe es la raiz del repositorio
+        VERSION=sh([script: 'cd ./01/solution && npm run env | grep "npm_package_version"', returnStdout: true]).trim()
+        VERSION_RC= "rc.2"
+    }
+
+    stages{
+        // los stage son completamente independientes entre si, y pueden tener su propio agent o environment
+        stage('Audit tools'){
+
+            steps{
+                auditTools()
+            }
+
+        }
+        stage('Build'){
+            // variables de entorno para este stage
+            environment{
+                // returnStdout: true lo necesitamos para volcal el valor sobre la variable VERSION_SUFFIX
+                VERSION_SUFFIX= getVersionSuffix(rcNumber: env.VERSION_RC, isReleaseCandidate: params.RC)
+            }
+            steps{
+                // dir es un plugin que nos permite cambiar de directorio
+                // nos movemos como si estuvieramos en JENKINS-SESSION2 poruqe es la raiz del repositorio
+                dir('./01/solution'){
+                    echo "Building version ${VERSION} with suffix: ${VERSION_SUFFIX}"
+                    sh '''
+                        npm install
+                        npm run build
+                    '''
+                }
+            }
+        }
+        stage('Unit Test'){
+            
+            steps{
+                dir('./01/solution/src'){
+                    sh '''
+                        npm test
+                    '''
+                }
+            }
+        }
+
+        stage('Publish'){
+            // cuando se de una condicion
+            when{
+                // con params me permite acceder al parametro creado en booleanParam(name: 'RC', ..........
+                expression{return params.RC}
+            }
+            // cuando el when sea verdad ocurrira el siguiente steps
+            steps{
+                // artefacto es el resultado de un job, es un fichero
+                // cuando genere mi codigo la build de mi codigo va a ir a una carpeta nueva llamada /app,
+                archiveArtifacts('01/solution/app/')
+            }
+        }
+    }
+
+}
