@@ -1,0 +1,13 @@
+// https://github.com/fr4nlearning/jenkins-library-sessions.git
+// master es el nombre de la rama en la que esta en el repositorio
+library identifier: 'jenkins-library-sessions@master',
+        retriever: modernSCM([$class: 'GitSCMSource', remote: 'https://github.com/fr4nlearning/jenkins-library-sessions.git'])
+
+pipeline{
+    agent any
+    stages{
+        stage('Audit tools'){
+            auditTools()
+        }
+    }
+}        
