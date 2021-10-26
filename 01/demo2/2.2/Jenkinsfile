@@ -8,6 +8,7 @@ pipeline{
     stages{
         stage('Audit tools'){
             steps{
+                // aqui le voy a pasar una variable que recogera el programa que esta en el repositorio
                 auditTools2(message: 'This is demo 2')
             }
             
